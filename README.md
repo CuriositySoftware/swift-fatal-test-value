@@ -40,3 +40,28 @@ extension Example {
     )
 }
 ```
+
+## Instaration
+
+### For Xcode
+
+If you are using [GUI to set up Package Dependencies in Xcode](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app), add the URL in Pacakge Dependencies.
+
+```
+https://github.com/CuriositySoftware/swift-fatal-test-value
+```
+
+### For Package.swift
+
+If you are using Package.swift add:
+
+```swift
+.package(url: "https://github.com/CuriositySoftware/swift-fatal-test-value/", from: "1.0.0")
+```
+
+and then add the product to any target that needs access to the macro:
+
+```swift
+.product(name: "FatalTestValue", package: "swift-fatal-test-value"),
+```
+
