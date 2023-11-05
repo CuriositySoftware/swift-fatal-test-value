@@ -1,5 +1,8 @@
 # swift-fatal-test-value
 
+![Swift Package Manager](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 This macro eliminates boilerplate needed to set initial values of Dependency Injected instances' methods in unit tests.
 By simply annotating a struct or class with `@FatalTestValue`, it auto-generates an initializer invoking `fatalError()` for the closure.
 
