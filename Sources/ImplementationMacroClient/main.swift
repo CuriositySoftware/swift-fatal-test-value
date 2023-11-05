@@ -1,6 +1,6 @@
 import FatalErrorTestValueImplementation
 
-//@FatalTestValue
+@FatalTestValue
 struct Example {
     var create: @Sendable (Int) async throws -> Void
     var read: @Sendable (Int) async throws -> String
