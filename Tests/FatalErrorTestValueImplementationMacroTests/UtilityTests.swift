@@ -12,8 +12,8 @@ final class UtilityTests: XCTestCase {
 
             let parameterClause = parameterClause(functionType)
 
-            assertBuildResult(
-                parameterClause,
+            assertStringsEqualWithDiff(
+                parameterClause.formatted().description,
                 """
                 """
             )
@@ -27,8 +27,8 @@ final class UtilityTests: XCTestCase {
 
             let parameterClause = parameterClause(functionType)
 
-            assertBuildResult(
-                parameterClause,
+            assertStringsEqualWithDiff(
+                parameterClause.formatted().description,
                 """
                 _
                 """
@@ -41,8 +41,8 @@ final class UtilityTests: XCTestCase {
 
             let parameterClause = parameterClause(functionType)
 
-            assertBuildResult(
-                parameterClause,
+            assertStringsEqualWithDiff(
+                parameterClause.formatted().description,
                 """
                 _, _
                 """
