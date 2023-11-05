@@ -1,4 +1,4 @@
-import FatalErrorTestValueImplementation
+import FatalTestValue
 
 @FatalTestValue
 struct Example {
