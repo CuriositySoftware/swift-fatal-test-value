@@ -3,6 +3,8 @@
 ![version](https://img.shields.io/github/v/release/CuriositySoftware/swift-fatal-test-value.svg)
 [![Build](https://github.com/CuriositySoftware/swift-fatal-test-value/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/CuriositySoftware/swift-fatal-test-value/actions/workflows/build-and-test.yml)
 ![Swift Package Manager](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCuriositySoftware%2Fswift-fatal-test-value%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/CuriositySoftware/swift-fatal-test-value)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCuriositySoftware%2Fswift-fatal-test-value%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/CuriositySoftware/swift-fatal-test-value)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 This macro eliminates boilerplate needed to set initial values of Dependency Injected instances' methods in unit tests.
