@@ -68,6 +68,9 @@ If you are using Package.swift add:
 and then add the product to any target that needs access to the macro:
 
 ```swift
-.product(name: "FatalTestValue", package: "swift-fatal-test-value"),
+.product(
+    name: "FatalTestValue",
+    package: "swift-fatal-test-value"
+)
 ```
 
