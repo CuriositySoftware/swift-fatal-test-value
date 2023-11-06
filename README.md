@@ -1,5 +1,6 @@
 # swift-fatal-test-value
 
+![version](https://img.shields.io/github/v/release/CuriositySoftware/swift-fatal-test-value.svg)
 ![Swift Package Manager](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
