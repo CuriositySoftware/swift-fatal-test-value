@@ -41,6 +41,10 @@ final class FatalErrorTestValueImplementationMacroTests: XCTestCase {
 #endif
     }
 
+}
+
+extension FatalErrorTestValueImplementationMacroTests {
+
     func testExpansionForChainedClosuresExpandsCorrectly() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
         assertMacroExpansion(
@@ -72,67 +76,71 @@ final class FatalErrorTestValueImplementationMacroTests: XCTestCase {
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
-    func testExpansionWhenOneClosureAndInnerDeclExpandsCorrectly() throws {
+
+    func testExpansionWhenFunctionAndOneClosureExpandsCorrectly() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
-
-        XCTContext.runActivity(named: "function") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                func method() -> Int
-                var foo: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                func method() -> Int
-                var foo: @Sendable (Int) async throws -> Void
-            }
-
-            extension Example {
-                public static let testValue = Example(
-                    foo: { _ in
-                        fatalError()
-                    }
-                )
-            }
-            """,
-            macros: testMacros
-            )
+        // Test expansion for the function and closure part
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            func method() -> Int
+            var foo: @Sendable (Int) async throws -> Void
+        }
+        """,
+        expandedSource: """
+        struct Example {
+            func method() -> Int
+            var foo: @Sendable (Int) async throws -> Void
         }
 
-        XCTContext.runActivity(named: "enum") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                enum Error { case dummy }
-                var foo: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                enum Error { case dummy }
-                var foo: @Sendable (Int) async throws -> Void
-            }
-
-            extension Example {
-                public static let testValue = Example(
-                    foo: { _ in
-                        fatalError()
-                    }
-                )
-            }
-            """,
-            macros: testMacros
+        extension Example {
+            public static let testValue = Example(
+                foo: { _ in
+                    fatalError()
+                }
             )
         }
-
+        """,
+        macros: testMacros
+        )
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
+
+    func testExpansionWhenEnumAndInnerDeclExpandsCorrectly() throws {
+#if canImport(FatalErrorTestValueImplementationMacro)
+        // Test expansion for the enum and inner declaration part
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            enum Error { case dummy }
+            var foo: @Sendable (Int) async throws -> Void
+        }
+        """,
+        expandedSource: """
+        struct Example {
+            enum Error { case dummy }
+            var foo: @Sendable (Int) async throws -> Void
+        }
+
+        extension Example {
+            public static let testValue = Example(
+                foo: { _ in
+                    fatalError()
+                }
+            )
+        }
+        """,
+        macros: testMacros
+        )
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
     func testExpansionWhenOneClosureWithTwoArgumentsExpandsCorrectly() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
         assertMacroExpansion(
@@ -195,148 +203,160 @@ final class FatalErrorTestValueImplementationMacroTests: XCTestCase {
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
+}
 
-    func testMacroDoesNothingWhenNoFunction() throws {
+extension FatalErrorTestValueImplementationMacroTests {
+
+    func testMacroDoesNothingWhenNoFunctionInStruct() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
-        XCTContext.runActivity(named: "struct") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-            }
-            """,
-            expandedSource: """
-            struct Example {
-            }
-            """,
-            macros: testMacros
-            )
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
         }
-
-        XCTContext.runActivity(named: "class") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            class Example {
-            }
-            """,
-            expandedSource: """
-            class Example {
-            }
-            """,
-            macros: testMacros
-            )
+        """,
+        expandedSource: """
+        struct Example {
         }
+        """,
+        macros: testMacros
+        )
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
-    func testExpansionWhenAttachedToClassOrStructProducesDiagnostic() throws {
+    func testMacroDoesNothingWhenNoFunctionInClass() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
-        XCTContext.runActivity(named: "protocol") { _ in
-            assertMacroExpansion(
-                """
-                @FatalTestValue
-                protocol Example {
-                }
-                """,
-                expandedSource: """
-                protocol Example {
-                }
-                """,
-                diagnostics: [
-                    DiagnosticSpec(
-                        message: "This macro can be applied to a class or struct",
-                        line: 1,
-                        column: 1
-                    )
-                ],
-                macros: testMacros
-            )
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        class Example {
         }
+        """,
+        expandedSource: """
+        class Example {
+        }
+        """,
+        macros: testMacros
+        )
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+}
 
-        XCTContext.runActivity(named: "actor") { _ in
-            assertMacroExpansion(
-                """
-                @FatalTestValue
-                actor Example {
-                }
-                """,
-                expandedSource: """
-                actor Example {
-                }
-                """,
-                diagnostics: [
-                    DiagnosticSpec(
-                        message: "This macro can be applied to a class or struct",
-                        line: 1,
-                        column: 1
-                    )
-                ],
-                macros: testMacros
-            )
+extension FatalErrorTestValueImplementationMacroTests {
+
+    func testExpansionWhenAttachedToProtocolProducesDiagnostic() throws {
+#if canImport(FatalErrorTestValueImplementationMacro)
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        protocol Example {
         }
+        """,
+        expandedSource: """
+        protocol Example {
+        }
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro can be applied to a class or struct",
+                line: 1,
+                column: 1
+            )
+        ],
+        macros: testMacros
+        )
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
-    func testExpansionWithNonClosureMemberYieldsDiagnostic() throws {
+    func testExpansionWhenAttachedToActorProducesDiagnostic() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
-        XCTContext.runActivity(named: "var") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                var id: Int
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                var id: Int
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-
-            """,
-            diagnostics: [
-                DiagnosticSpec(
-                    message: "This macro cannot be applied to types with members that are not closures",
-                    line: 1,
-                    column: 1
-                )
-            ],
-            macros: testMacros
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        actor Example {
+        }
+        """,
+        expandedSource: """
+        actor Example {
+        }
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro can be applied to a class or struct",
+                line: 1,
+                column: 1
             )
+        ],
+        macros: testMacros
+        )
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testExpansionWithVariableNonClosureMemberYieldsDiagnostic() throws {
+#if canImport(FatalErrorTestValueImplementationMacro)
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            var id: Int
+            var removeItem: @Sendable (Int) async throws -> Void
+        }
+        """,
+        expandedSource: """
+        struct Example {
+            var id: Int
+            var removeItem: @Sendable (Int) async throws -> Void
         }
 
-        XCTContext.runActivity(named: "tuple") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                var (String, Int) = ("", 1)
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                var (String, Int) = ("", 1)
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-
-            """,
-            diagnostics: [
-                DiagnosticSpec(
-                    message: "This macro cannot be applied to types with members that are not closures",
-                    line: 1,
-                    column: 1
-                )
-            ],
-            macros: testMacros
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro cannot be applied to types with members that are not closures",
+                line: 1,
+                column: 1
             )
+        ],
+        macros: testMacros
+        )
+#else
+        throw XCTSkip("macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testExpansionWithTupleNonClosureMemberYieldsDiagnostic() throws {
+#if canImport(FatalErrorTestValueImplementationMacro)
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            var (name: String, id: Int) = ("", 1)
+            var removeItem: @Sendable (Int) async throws -> Void
         }
+        """,
+        expandedSource: """
+        struct Example {
+            var (name: String, id: Int) = ("", 1)
+            var removeItem: @Sendable (Int) async throws -> Void
+        }
+
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro cannot be applied to types with members that are not closures",
+                line: 1,
+                column: 1
+            )
+        ],
+        macros: testMacros
+        )
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif

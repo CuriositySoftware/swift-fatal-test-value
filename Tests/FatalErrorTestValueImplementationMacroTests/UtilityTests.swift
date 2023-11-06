@@ -6,50 +6,48 @@ import _SwiftSyntaxTestSupport
 
 final class UtilityTests: XCTestCase {
     func testParameterClauseReturnsEmptyStringForClosureWithoutArguments() throws {
-        try XCTContext.runActivity(named: "no argument") { _ in
-            let functionType = try VariableDeclSyntax("var foo: () -> ()") {}
-                .bindings.first!.closure!
+        let functionType = try VariableDeclSyntax("var foo: () -> ()") {}
+            .bindings.first!.closure!
 
-            let parameterClause = parameterClause(functionType)
+        let parameterClause = parameterClause(functionType)
 
-            assertStringsEqualWithDiff(
-                parameterClause.formatted().description,
+        assertStringsEqualWithDiff(
+            parameterClause.formatted().description,
                 """
                 """
-            )
-        }
+        )
     }
 
-    func testParameterClauseReturnsWildcard() throws {
-        try XCTContext.runActivity(named: "one argument") { _ in
-            let functionType = try VariableDeclSyntax("var foo: (Int) -> ()") {}
-                .bindings.first!.closure!
+    func testParameterClauseWithOneArgumentReturnsWildcard() throws {
+        let functionType = try VariableDeclSyntax("var foo: (Int) -> ()") {}
+            .bindings.first!.closure!
 
-            let parameterClause = parameterClause(functionType)
+        let parameterClause = parameterClause(functionType)
 
-            assertStringsEqualWithDiff(
-                parameterClause.formatted().description,
-                """
-                _
-                """
-            )
-        }
-
-        try XCTContext.runActivity(named: "two arguments") { _ in
-            let functionType = try VariableDeclSyntax("var n: (Int, String) -> ()") {}
-                .bindings.first!.closure!
-
-            let parameterClause = parameterClause(functionType)
-
-            assertStringsEqualWithDiff(
-                parameterClause.formatted().description,
-                """
-                _, _
-                """
-            )
-        }
+        assertStringsEqualWithDiff(
+            parameterClause.formatted().description,
+        """
+        _
+        """
+        )
     }
 
+    func testParameterClauseWithTwoArgumentsReturnsWildcard() throws {
+        let functionType = try VariableDeclSyntax("var n: (Int, String) -> ()") {}
+            .bindings.first!.closure!
+
+        let parameterClause = parameterClause(functionType)
+
+        assertStringsEqualWithDiff(
+            parameterClause.formatted().description,
+        """
+        _, _
+        """
+        )
+    }
+}
+
+extension UtilityTests {
     func testPropertyNameRetrievalFromVariableDecl() throws {
         let variableDecl = try VariableDeclSyntax("var foo: () -> ()") {}
 
