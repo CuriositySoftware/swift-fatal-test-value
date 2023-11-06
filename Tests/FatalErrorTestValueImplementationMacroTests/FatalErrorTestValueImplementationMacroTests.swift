@@ -105,7 +105,7 @@ extension FatalErrorTestValueImplementationMacroTests {
         macros: testMacros
         )
 #else
-        throw XCTSkip("Macros are only supported when running tests for the host platform")
+        throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
@@ -137,7 +137,7 @@ extension FatalErrorTestValueImplementationMacroTests {
         macros: testMacros
         )
 #else
-        throw XCTSkip("Macros are only supported when running tests for the host platform")
+        throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
@@ -270,7 +270,7 @@ extension FatalErrorTestValueImplementationMacroTests {
         macros: testMacros
         )
 #else
-        throw XCTSkip("Macros are only supported when running tests for the host platform")
+        throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
@@ -296,7 +296,7 @@ extension FatalErrorTestValueImplementationMacroTests {
         macros: testMacros
         )
 #else
-        throw XCTSkip("Macros are only supported when running tests for the host platform")
+        throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
@@ -327,7 +327,7 @@ extension FatalErrorTestValueImplementationMacroTests {
         macros: testMacros
         )
 #else
-        throw XCTSkip("Macros are only supported when running tests for the host platform")
+        throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
     }
 
