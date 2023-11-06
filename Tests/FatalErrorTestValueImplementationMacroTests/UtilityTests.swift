@@ -45,7 +45,9 @@ final class UtilityTests: XCTestCase {
         """
         )
     }
+}
 
+extension UtilityTests {
     func testPropertyNameRetrievalFromVariableDecl() throws {
         let variableDecl = try VariableDeclSyntax("var foo: () -> ()") {}
 
