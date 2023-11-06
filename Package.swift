@@ -18,6 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.2"),
+        .package(url: "https://github.com/apple/swift-testing.git", revision: "aa8702a"),
     ],
     targets: [
         .macro(
@@ -44,6 +45,7 @@ let package = Package(
             dependencies: [
                 "FatalErrorTestValueImplementationMacro",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+                .product(name: "Testing", package: "swift-testing"),
             ]
         ),
     ]
