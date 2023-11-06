@@ -59,12 +59,18 @@ https://github.com/CuriositySoftware/swift-fatal-test-value
 If you are using Package.swift add:
 
 ```swift
-.package(url: "https://github.com/CuriositySoftware/swift-fatal-test-value/", from: "1.0.0")
+.package(
+    url: "https://github.com/CuriositySoftware/swift-fatal-test-value/",
+    .upToNextMajor(from: "1.0.0")
+)
 ```
 
 and then add the product to any target that needs access to the macro:
 
 ```swift
-.product(name: "FatalTestValue", package: "swift-fatal-test-value"),
+.product(
+    name: "FatalTestValue",
+    package: "swift-fatal-test-value"
+)
 ```
 
