@@ -300,61 +300,63 @@ extension FatalErrorTestValueImplementationMacroTests {
 #endif
     }
 
-    func testExpansionWithNonClosureMemberYieldsDiagnostic() throws {
+    func testExpansionWithVariableNonClosureMemberYieldsDiagnostic() throws {
 #if canImport(FatalErrorTestValueImplementationMacro)
-        XCTContext.runActivity(named: "var") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                var id: Int
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                var id: Int
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-
-            """,
-            diagnostics: [
-                DiagnosticSpec(
-                    message: "This macro cannot be applied to types with members that are not closures",
-                    line: 1,
-                    column: 1
-                )
-            ],
-            macros: testMacros
-            )
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            var id: Int
+            var removeItem: @Sendable (Int) async throws -> Void
+        }
+        """,
+        expandedSource: """
+        struct Example {
+            var id: Int
+            var removeItem: @Sendable (Int) async throws -> Void
         }
 
-        XCTContext.runActivity(named: "tuple") { _ in
-            assertMacroExpansion(
-            """
-            @FatalTestValue
-            struct Example {
-                var (String, Int) = ("", 1)
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-            """,
-            expandedSource: """
-            struct Example {
-                var (String, Int) = ("", 1)
-                var removeItem: @Sendable (Int) async throws -> Void
-            }
-
-            """,
-            diagnostics: [
-                DiagnosticSpec(
-                    message: "This macro cannot be applied to types with members that are not closures",
-                    line: 1,
-                    column: 1
-                )
-            ],
-            macros: testMacros
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro cannot be applied to types with members that are not closures",
+                line: 1,
+                column: 1
             )
+        ],
+        macros: testMacros
+        )
+#else
+        throw XCTSkip("Macros are only supported when running tests for the host platform")
+#endif
+    }
+
+    func testExpansionWithTupleNonClosureMemberYieldsDiagnostic() throws {
+#if canImport(FatalErrorTestValueImplementationMacro)
+        assertMacroExpansion(
+        """
+        @FatalTestValue
+        struct Example {
+            var (name: String, id: Int) = ("", 1)
+            var removeItem: @Sendable (Int) async throws -> Void
         }
+        """,
+        expandedSource: """
+        struct Example {
+            var (name: String, id: Int) = ("", 1)
+            var removeItem: @Sendable (Int) async throws -> Void
+        }
+
+        """,
+        diagnostics: [
+            DiagnosticSpec(
+                message: "This macro cannot be applied to types with members that are not closures",
+                line: 1,
+                column: 1
+            )
+        ],
+        macros: testMacros
+        )
 #else
         throw XCTSkip("macros are only supported when running tests for the host platform")
 #endif
