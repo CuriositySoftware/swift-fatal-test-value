@@ -48,7 +48,7 @@ extension Example {
 }
 ```
 
-## Instaration
+## Installation
 
 ### For Xcode
 
