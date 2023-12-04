@@ -12,7 +12,7 @@ By simply annotating a struct or class with `@FatalTestValue`, it auto-generates
 
 ## Quick start
 
-To get started, import FatalTestValue: `import FatalTestValue`, annotate your struct or class  with `@FatalTestValue`:
+To get started, import FatalTestValue: `import FatalTestValue`, annotate your struct or class with `@FatalTestValue`:
 
 ```swift
 import FatalTestValue
@@ -77,4 +77,3 @@ and then add the product to any target that needs access to the macro:
     package: "swift-fatal-test-value"
 )
 ```
-
